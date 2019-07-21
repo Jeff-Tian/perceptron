@@ -26,6 +26,10 @@ export class PerceptronBase {
   static convertBooleanToNumber(b: boolean): number {
     return b ? 1 : -1
   }
+
+  static m_of_n(criteria: (m: number, n: number) => boolean, ...x: boolean[]): boolean {
+    return criteria(x.filter(xi => xi === true).length, x.length)
+  }
 }
 
 export default class Perceptron {
@@ -34,10 +38,12 @@ export default class Perceptron {
   }
 
   static and(x1: boolean, x2: boolean) {
-    return new PerceptronBase(-0.8, 0.5, 0.5).sign(x1, x2)
+    // return new PerceptronBase(-0.8, 0.5, 0.5).sign(x1, x2)
+    return PerceptronBase.m_of_n((m, n) => m === n, x1, x2)
   }
 
   static or(x1: boolean, x2: boolean) {
-    return new PerceptronBase(0.3, 0.5, 0.5).sign(x1, x2)
+    // return new PerceptronBase(0.3, 0.5, 0.5).sign(x1, x2)
+    return PerceptronBase.m_of_n(m => m >= 1, x1, x2)
   }
 }
