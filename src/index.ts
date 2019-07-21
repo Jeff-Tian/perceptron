@@ -32,7 +32,7 @@ export class PerceptronBase {
   }
 }
 
-export default class Perceptron {
+export class Logical {
   static not(x: boolean) {
     return new PerceptronBase(-0.5, -1).sign(x)
   }
@@ -48,7 +48,7 @@ export default class Perceptron {
   }
 
   static xor(x1: boolean, x2: boolean) {
-    return Perceptron.or(Perceptron.and(x1, Perceptron.not(x2)), Perceptron.and(Perceptron.not(x1), x2))
+    return Logical.or(Logical.and(x1, Logical.not(x2)), Logical.and(Logical.not(x1), x2))
   }
 
   static more_general_than_or_equal_to(set: any, hj: (x: any) => boolean, hk: (x: any) => boolean) {
@@ -64,6 +64,11 @@ export default class Perceptron {
   }
 
   static more_general_than(set: any, hj: (x: any) => boolean, hk: (x: any) => boolean) {
-    return Perceptron.more_general_than_or_equal_to(set, hj, hk) && Perceptron.not(Perceptron.more_general_than_or_equal_to(set, hk, hj))
+    return Logical.more_general_than_or_equal_to(set, hj, hk) && Logical.not(Logical.more_general_than_or_equal_to(set, hk, hj))
   }
+}
+
+export const perceptron = (...weights: number[]): (...x: any[]) => boolean => {
+  const p = new PerceptronBase(...weights)
+  return p.sign.bind(p)
 }
