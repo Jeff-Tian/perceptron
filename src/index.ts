@@ -50,4 +50,20 @@ export default class Perceptron {
   static xor(x1: boolean, x2: boolean) {
     return Perceptron.or(Perceptron.and(x1, Perceptron.not(x2)), Perceptron.and(Perceptron.not(x1), x2))
   }
+
+  static more_general_than_or_equal_to(set: any, hj: (x: any) => boolean, hk: (x: any) => boolean) {
+    for (const x of set) {
+      if (hk(set[x])) {
+        if (!hj(set[x])) {
+          return false
+        }
+      }
+    }
+
+    return true
+  }
+
+  static more_general_than(set: any, hj: (x: any) => boolean, hk: (x: any) => boolean) {
+    return Perceptron.more_general_than_or_equal_to(set, hj, hk) && Perceptron.not(Perceptron.more_general_than_or_equal_to(set, hk, hj))
+  }
 }

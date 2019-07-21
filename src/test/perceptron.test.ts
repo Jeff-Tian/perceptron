@@ -15,7 +15,7 @@ describe('perceptron', () => {
     })
   })
 
-  describe('basic', () => {
+  describe('basic logic', () => {
     it('not', () => {
       assert(Perceptron.not(true) === false)
       assert(Perceptron.not(false) === true)
@@ -40,6 +40,26 @@ describe('perceptron', () => {
       assert(Perceptron.xor(true, false) === true)
       assert(Perceptron.xor(false, true) === true)
       assert(Perceptron.xor(false, false) === false)
+    })
+  })
+
+  describe('more general than', () => {
+    const set = [1, 2, 3, 4, 5]
+
+    it('more general than or equal to', () => {
+      const hj = x => true
+      const hk = x => true
+
+      assert(Perceptron.more_general_than_or_equal_to(set, hj, hk) === true)
+    })
+
+    it('more general than', () => {
+      const hj = x => true
+      const hk = x => x === 1
+
+      assert(Perceptron.more_general_than_or_equal_to(set, hj, hk) === true)
+      assert(Perceptron.more_general_than_or_equal_to(set, hk, hj) === false)
+      assert(Perceptron.more_general_than(set, hj, hk) === true)
     })
   })
 })
