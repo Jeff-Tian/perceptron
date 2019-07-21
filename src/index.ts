@@ -46,4 +46,8 @@ export default class Perceptron {
     // return new PerceptronBase(0.3, 0.5, 0.5).sign(x1, x2)
     return PerceptronBase.m_of_n(m => m >= 1, x1, x2)
   }
+
+  static xor(x1: boolean, x2: boolean) {
+    return Perceptron.or(Perceptron.and(x1, Perceptron.not(x2)), Perceptron.and(Perceptron.not(x1), x2))
+  }
 }

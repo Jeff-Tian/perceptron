@@ -34,5 +34,12 @@ describe('perceptron', () => {
       assert(Perceptron.or(false, true) === true)
       assert(Perceptron.or(false, false) === false)
     })
+
+    it('xor', () => {
+      assert(Perceptron.xor(true, true) === false)
+      assert(Perceptron.xor(true, false) === true)
+      assert(Perceptron.xor(false, true) === true)
+      assert(Perceptron.xor(false, false) === false)
+    })
   })
 })
