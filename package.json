@@ -1,7 +1,7 @@
 {
-  "name": "find-s",
+  "name": "perceptron",
   "version": "0.0.1",
-  "description": "寻找极大特殊假设",
+  "description": "感知器",
   "main": "lib/index.js",
   "directories": {
     "lib": "lib",

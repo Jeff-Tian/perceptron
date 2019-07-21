@@ -1,16 +1,19 @@
-export function findS(samples: any[], concept: string, attributes: string[]) {
-  const h = {}
-  attributes.map(v => h[v] = null);
+export class PerceptronBase {
+  w0: number
+  w1: number
 
-  samples.map((value, index, array) => {
-    if (value[concept] === 'Yes') {
-      attributes.map(a => {
-        if (value[a] !== h[a]) {
-          h[a] = h[a] === null ? value[a] : '?'
-        }
-      })
-    }
-  })
+  constructor(w0: number, w1: number) {
+    this.w0 = w0
+    this.w1 = w1
+  }
 
-  return h;
+  sign(x1: number) {
+    return this.w0 + this.w1 * x1 > 0 ? true : false
+  }
+}
+
+export default class Perceptron {
+  static not(x: boolean) {
+    return new PerceptronBase(-0.5, -1).sign(x ? 1 : -1)
+  }
 }
