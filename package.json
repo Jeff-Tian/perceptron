@@ -1,5 +1,5 @@
 {
-  "name": "perceptron",
+  "name": "@jeff-tian/perceptron",
   "version": "0.0.1",
   "description": "感知器",
   "main": "lib/index.js",

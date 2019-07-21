@@ -14,5 +14,12 @@ describe('perceptron', () => {
       assert(Perceptron.not(true) === false)
       assert(Perceptron.not(false) === true)
     })
+
+    it('and', () => {
+      assert(Perceptron.and(true, true) === true)
+      assert(Perceptron.and(true, false) === false)
+      assert(Perceptron.and(false, true) === false)
+      assert(Perceptron.and(false, false) === false)
+    })
   })
 })

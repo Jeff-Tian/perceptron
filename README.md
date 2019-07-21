@@ -15,12 +15,14 @@
 ## 安装
 
 ```shell
-npm install perceptron
+npm install @jeff-tian/perceptron
 ```
 
 ## 使用
+
 ```typescript
-import { findS } from 'perceptron'
+import Perceptron from '@jeff-tian/perceptron'
+assert(Perceptron.not(true) === false)
 ```
 
 ## 开发
