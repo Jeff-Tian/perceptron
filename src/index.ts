@@ -16,7 +16,8 @@ export class PerceptronBase {
       xArray = x.map((value: boolean) => PerceptronBase.convertBooleanToNumber(value))
     }
 
-    return PerceptronBase.sumProduct([1, ...xArray], this.weights) > 0
+    const sum = PerceptronBase.sumProduct([1, ...xArray], this.weights)
+    return sum > 0
   }
 
   static sumProduct(a1: number[], a2: number[]) {
@@ -51,24 +52,51 @@ export class Logical {
     return Logical.or(Logical.and(x1, Logical.not(x2)), Logical.and(Logical.not(x1), x2))
   }
 
-  static more_general_than_or_equal_to(set: any, hj: (x: any) => boolean, hk: (x: any) => boolean) {
-    for (const x of set) {
-      if (hk(set[x])) {
-        if (!hj(set[x])) {
-          return false
+  static more_general_than_or_equal_to(set: any, hj: (x: any) => boolean, hk: (x: any) => boolean): boolean
+  static more_general_than_or_equal_to(hj: (x: any) => boolean, hk: (x: any) => boolean): boolean
+  static more_general_than_or_equal_to(...args: any[]): boolean {
+    if (args.length === 3) {
+      const [set, hj, hk] = args;
+
+      for (const x of set) {
+        if (hk(x)) {
+          if (!hj(x)) {
+            return false
+          }
         }
       }
-    }
 
-    return true
+      return true
+    } else {
+      const [hj, hk] = args;
+
+      // TODO: How to infer by function definition only?
+
+      return false
+    }
   }
 
-  static more_general_than(set: any, hj: (x: any) => boolean, hk: (x: any) => boolean) {
-    return Logical.more_general_than_or_equal_to(set, hj, hk) && Logical.not(Logical.more_general_than_or_equal_to(set, hk, hj))
+
+  static more_general_than(set: any, hj: (x: any) => boolean, hk: (x: any) => boolean): boolean
+  static more_general_than(hj: (x: any) => boolean, hk: (x: any) => boolean): boolean
+  static more_general_than(...args: any[]) {
+    if (args.length === 3) {
+      const [set, hj, hk] = args
+
+      return Logical.more_general_than_or_equal_to(set, hj, hk) && Logical.not(Logical.more_general_than_or_equal_to(set, hk, hj))
+    }
+
+    if (args.length === 2) {
+      const [hj, hk] = args
+
+      return Logical.more_general_than_or_equal_to(hj, hk) && Logical.not(Logical.more_general_than_or_equal_to(hj, hk))
+    }
+
+    throw new Error('参数错误！')
   }
 }
 
 export const perceptron = (...weights: number[]): (...x: any[]) => boolean => {
   const p = new PerceptronBase(...weights)
-  return p.sign.bind(p)
+  return x => p.sign.apply(p, x)
 }

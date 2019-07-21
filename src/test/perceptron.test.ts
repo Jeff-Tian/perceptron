@@ -66,7 +66,7 @@ describe('perceptron', () => {
   describe('perceptron and logical', () => {
     it('perceptron A is more_general_than perceptron B', () => {
       const X = [
-        [0, 0]
+        [0, 0],
         [1, 1],
         [2, 2]
       ]
@@ -76,6 +76,13 @@ describe('perceptron', () => {
 
       assert(Logical.more_general_than_or_equal_to(X, A, B) === true)
       assert(Logical.more_general_than(X, A, B) === true)
+    })
+
+    it.skip('perceptron A is more general than perceptron B in all possible values', () => {
+      const A = perceptron(1, 2, 1)
+      const B = perceptron(0, 2, 1)
+
+      assert(Logical.more_general_than(A, B) === true)
     })
   })
 })

@@ -5,8 +5,7 @@
   ],
   "rules": {
     "semicolon": [
-      true,
-      "always"
+      false
     ],
     "quotemark": [
       true,
