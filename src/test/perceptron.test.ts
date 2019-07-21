@@ -2,6 +2,12 @@ import assert = require('assert')
 import Perceptron, { PerceptronBase } from '../index'
 
 describe('perceptron', () => {
+  describe('basic math', () => {
+    it('sum product', () => {
+      assert(PerceptronBase.sumProduct([1, 1, 1, 1, 1], [2, 2, 2, 2, 2]) === 10)
+    })
+  })
+
   describe('basic', () => {
     it('sign', () => {
       const p = new PerceptronBase(-0.5, -1)

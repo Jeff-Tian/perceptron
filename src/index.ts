@@ -1,20 +1,16 @@
 export class PerceptronBase {
-  w0: number
-  w1: number
-  w2: number
+  weights: number[]
 
-  constructor(w0: number, w1: number, w2: number = 0) {
-    this.w0 = w0
-    this.w1 = w1
-    this.w2 = w2
+  constructor(...w: number[]) {
+    this.weights = w
   }
 
-  sign(x1: number) {
-    return this.w0 + this.w1 * x1 > 0 ? true : false
+  sign(...x: number[]) {
+    return PerceptronBase.sumProduct([1, ...x], this.weights) > 0
   }
 
-  sign2(x1: number, x2: number) {
-    return this.w0 + this.w1 * x1 + this.w2 * x2 > 0 ? true : false
+  static sumProduct(a1: number[], a2: number[]) {
+    return a1.map((n, i) => n * a2[i]).reduce((prev, next) => prev + next, 0)
   }
 }
 
@@ -24,6 +20,6 @@ export default class Perceptron {
   }
 
   static and(x1: boolean, x2: boolean) {
-    return new PerceptronBase(-0.8, 0.5, 0.5).sign2(x1 ? 1 : -1, x2 ? 1 : -1)
+    return new PerceptronBase(-0.8, 0.5, 0.5).sign(x1 ? 1 : -1, x2 ? 1 : -1)
   }
 }
