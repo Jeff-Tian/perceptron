@@ -1,4 +1,4 @@
-# perceptron
+# @jeff-tian/perceptron
 
 > 感知器。如果不允许使用 &&, || 等逻辑运算，程序该怎么写？
 
