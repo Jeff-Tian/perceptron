@@ -5,6 +5,18 @@ export class PerceptronBase {
     this.weights = w
   }
 
+  static sumProduct(a1: number[], a2: number[]) {
+    return a1.map((n, i) => n * a2[i]).reduce((prev, next) => prev + next, 0)
+  }
+
+  static convertBooleanToNumber(b: boolean): number {
+    return b ? 1 : -1
+  }
+
+  static m_of_n(criteria: (m: number, n: number) => boolean, ...x: boolean[]): boolean {
+    return criteria(x.filter(xi => xi === true).length, x.length)
+  }
+
   sign(...x: number[]): boolean
   sign(...x: boolean[]): boolean
   sign(...x: any[]): boolean {
@@ -18,18 +30,6 @@ export class PerceptronBase {
 
     const sum = PerceptronBase.sumProduct([1, ...xArray], this.weights)
     return sum > 0
-  }
-
-  static sumProduct(a1: number[], a2: number[]) {
-    return a1.map((n, i) => n * a2[i]).reduce((prev, next) => prev + next, 0)
-  }
-
-  static convertBooleanToNumber(b: boolean): number {
-    return b ? 1 : -1
-  }
-
-  static m_of_n(criteria: (m: number, n: number) => boolean, ...x: boolean[]): boolean {
-    return criteria(x.filter(xi => xi === true).length, x.length)
   }
 }
 
