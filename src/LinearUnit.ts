@@ -30,3 +30,11 @@ export const learn = (initialWeights: number[], initialEta, trainingSet) => {
 
   return learningDetails
 }
+
+export const trainingError = (weights: number[], trainingSet) => {
+  return (
+    trainingSet
+      .map(trainingRecord => Math.pow(trainingRecord.t - linearUnit(...weights)(...trainingRecord.x), 2))
+      .reduce((prev, next) => prev + next, 0) / 2
+  )
+}
