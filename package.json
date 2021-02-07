@@ -1,6 +1,6 @@
 {
   "name": "@jeff-tian/perceptron",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "感知器",
   "main": "lib/index.js",
   "directories": {
