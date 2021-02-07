@@ -38,3 +38,14 @@ export const trainingError = (weights: number[], trainingSet) => {
       .reduce((prev, next) => prev + next, 0) / 2
   )
 }
+
+export const generateTrainingSet = (n: number) => {
+  new Array(n).fill(0).map(i => {
+    const x = [-100 + Math.random() * 200, Math.random() * 200 - 100]
+
+    return {
+      x,
+      t: linearUnit(1, 2)(...x),
+    }
+  })
+}
