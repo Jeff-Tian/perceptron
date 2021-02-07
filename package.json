@@ -38,6 +38,7 @@
     "prettier": "^1.16.2",
     "prettier-tslint": "^0.4.2",
     "source-map-support": "^0.5.10",
+    "ts-loader": "^8.0.15",
     "ts-node": "^8.0.2",
     "ts-node-dev": "^1.0.0-pre.30",
     "tslib": "^1.9.0",
@@ -45,7 +46,9 @@
     "tslint-config-prettier": "^1.17.0",
     "tslint-plugin-prettier": "^2.0.1",
     "typemoq": "latest",
-    "typescript": "^3.3.3"
+    "typescript": "^3.3.3",
+    "webpack": "^5.21.1",
+    "webpack-cli": "^4.5.0"
   },
   "types": "lib/index.d.ts",
   "nyc": {
@@ -67,5 +70,8 @@
       "text-summary"
     ],
     "report-dir": "docs/reports/coverage"
+  },
+  "browser": {
+    "[module-name]": false
   }
 }
