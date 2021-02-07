@@ -56,3 +56,5 @@ lib
 
 .nyc_output
 docs
+
+!webpack.config.js

@@ -1,5 +1,8 @@
 {
   "name": "@jeff-tian/perceptron",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "0.0.4",
   "description": "感知器",
   "main": "lib/index.js",
@@ -10,7 +13,7 @@
   "scripts": {
     "test": "cross-env TS_NODE_TRANSPILE_ONLY=1 mocha --require espower-typescript/guess --timeout 3000 --exit 'src/test/*.test.ts'",
     "test:coverage": "TS_NODE_COMPILER_OPTIONS='{\"target\":\"es6\"}' nyc npm test",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && webpack",
     "prepare": "npm run build",
     "pub": "npm publish --access public"
   },
