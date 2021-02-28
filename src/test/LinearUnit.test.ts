@@ -90,4 +90,39 @@ describe('Linear Unit', () => {
       assert(trainingError([1, 1], trainingSet) === 0.5)
     })
   })
+
+  describe('learning and training with random data', () => {
+    const trainingSet = [
+      {
+        x: [24.708572488795085, 24.801089199101867],
+        t: 74.31075088699882,
+      },
+      {
+        x: [-86.36352853710977, -36.63523496882299],
+        t: -159.63399847475574,
+      },
+    ]
+    const initialWeights = [1, 1]
+    const initialEta = 0.1
+
+    it('leans', () => {
+      const details = learn(initialWeights, initialEta, trainingSet)
+      assert.deepStrictEqual(details, [
+        {
+          e: 24.801089199101867,
+          iter: 0,
+          o: 49.50966168789695,
+          t: 74.31075088699882,
+          weights: [62.27995102770813, 62.50940254618073],
+        },
+        {
+          e: 7509.128979436588,
+          iter: 1,
+          o: -7668.762977911344,
+          t: -159.63399847475574,
+          weights: [-32363.463794192783, -13692.42582609669],
+        },
+      ])
+    })
+  })
 })
