@@ -18,6 +18,8 @@ export const learn = (initialWeights: number[], initialEta, trainingSet) => {
     const o = linearUnit(...weights)(...trainingRecord.x)
     const t = trainingRecord.t
 
+    weights = updatedWeights(weights, o, initialEta / (i + 1), trainingRecord)
+
     learningDetails.push({
       iter: i,
       weights,
@@ -25,7 +27,6 @@ export const learn = (initialWeights: number[], initialEta, trainingSet) => {
       t,
       e: t - o,
     })
-    weights = updatedWeights(weights, o, initialEta / (i + 1), trainingRecord)
   })
 
   return learningDetails
