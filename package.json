@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "感知器",
   "main": "lib/index.js",
   "directories": {
