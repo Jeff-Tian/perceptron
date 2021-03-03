@@ -1,5 +1,6 @@
 import assert = require('assert')
 import { learn, linearUnit, trainingError, updatedWeights } from '../LinearUnit'
+import { trainingSet } from './common/training'
 
 describe('Linear Unit', () => {
   it('[1] * [1] => 1', () => {
@@ -7,29 +8,6 @@ describe('Linear Unit', () => {
   })
 
   describe('learning and training', () => {
-    const trainingSet = [
-      {
-        x: [1, 1],
-        t: 3,
-      },
-      {
-        x: [2, 2],
-        t: 6,
-      },
-      {
-        x: [3, 3],
-        t: 9,
-      },
-      {
-        x: [0, 1],
-        t: 2,
-      },
-      {
-        x: [-1, 2],
-        t: 3,
-      },
-    ]
-
     it('updates weights', () => {
       const weights = [1.26, 1.26]
       const o = 1.26
@@ -87,7 +65,7 @@ describe('Linear Unit', () => {
     })
 
     it('calculates training error', () => {
-      assert(trainingError([1, 1], trainingSet) === 0.5)
+      assert(trainingError([1, 1], trainingSet) === 9.5)
     })
   })
 
