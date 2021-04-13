@@ -1,10 +1,10 @@
 import { sigmoidThresholdUnit } from './SigmoidThresholdUnit'
 import { PerceptronBase } from './index'
 
-const learnOneStep = (network: INetwork, eta: number) => (input, index) => {
+const learnOneStep = (network: INetwork, eta: number, alpha: number = 0) => (input, index) => {
   forwardProp(input, network)
   backwardProp(input.t, network)
-  updateWeights(input.x, eta, network)
+  updateWeights(input.x, eta, network, alpha)
 
   network.weightsHistory.push({ index, weights: snapshotWeights(network.layers) })
 }
@@ -21,19 +21,21 @@ export const backPropFor2LevelSigmoidUnitForwardNetwork = (
     },
   ],
   eta: number = 0.3,
+  alpha: number = 0,
   numberOfInput: number = 2,
   numberOfOutput: number = 1,
   numberOfHiddenLayers: number = 1,
 ) => {
   const network: INetwork = {
     layers: [
-      { units: [{ weights: [0.1, 0.1, 0.1], output: 0, delta: 0 }] },
+      { units: [{ weights: [0.1, 0.1, 0.1], output: 0, delta: 0, deltas: [0, 0] }] },
       {
         units: [
           {
             weights: [0.1, 0.1],
             output: 0,
             delta: 0,
+            deltas: [0, 0],
           },
         ],
       },
@@ -45,7 +47,7 @@ export const backPropFor2LevelSigmoidUnitForwardNetwork = (
 
   let epoch = 0
   while (epoch++ < 1) {
-    trainingExamples.forEach(learnOneStep(network, eta))
+    trainingExamples.forEach(learnOneStep(network, eta, alpha))
   }
 
   return network
@@ -53,18 +55,18 @@ export const backPropFor2LevelSigmoidUnitForwardNetwork = (
 
 const snapshotWeights = (layers: ILayer[]): number[][][] => layers.map(layer => layer.units.map(u => [...u.weights]))
 
-const updateWeights = (x: number[], eta: number, network: INetwork) => {
+const updateWeights = (x: number[], eta: number, network: INetwork, alpha: number = 0) => {
   network.layers[0].units.forEach(u => {
     x.forEach((xji, index) => {
-      const dwji = eta * u.delta * xji
-      u.weights[index] = u.weights[index] + dwji
+      u.deltas[index] = eta * u.delta * xji + alpha * u.deltas[index]
+      u.weights[index] = u.weights[index] + u.deltas[index]
     })
   })
 
   network.layers[1].units.forEach(u => {
     network.layers[0].units.forEach((xji, index) => {
-      const dwji = eta * u.delta * xji.output
-      u.weights[index] = u.weights[index] + dwji
+      u.deltas[index] = eta * u.delta * xji.output + alpha * u.deltas[index]
+      u.weights[index] = u.weights[index] + u.deltas[index]
     })
   })
 }
@@ -111,6 +113,7 @@ export interface ILayer {
 
 export interface IUnit {
   delta: number
+  deltas: number[]
   output: number
   weights: number[]
 }
