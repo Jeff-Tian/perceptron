@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.0.10",
+  "version": "0.1.0",
   "description": "感知器是一个逐渐演化的机器学习包",
   "main": "lib/index.js",
   "directories": {
