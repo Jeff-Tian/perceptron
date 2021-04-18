@@ -1,5 +1,5 @@
-import { backPropFor2LevelSigmoidUnitForwardNetwork } from '../NeuralNetwork'
-import * as assert from 'assert'
+import { backPropFor2LevelSigmoidUnitForwardNetwork, build8x3x8 } from '../NeuralNetwork'
+import assert = require('assert')
 
 describe('Neural Network', () => {
   it('learns in a simple way', () => {
@@ -82,5 +82,18 @@ describe('Neural Network', () => {
         weights: [[[0.10161743545543266, 0.09899357900214031, 0.1]], [[0.1137618037587342, 0.1]]],
       },
     ])
+  })
+})
+
+describe('8x3x8 network', () => {
+  it('builds a 8x3x8 network', () => {
+    const n = build8x3x8()
+    const [inputLayer, hiddenLayer, outputLayer] = n.layers
+
+    assert(inputLayer.units.length === 8)
+    assert(hiddenLayer.units.length === 3)
+    hiddenLayer.units.forEach(u => assert.deepStrictEqual(u.weights, new Array(9).fill(0.1)))
+    assert(outputLayer.units.length === 8)
+    outputLayer.units.forEach(u => assert.deepStrictEqual(u.weights, new Array(4).fill(0.1)))
   })
 })

@@ -56,15 +56,17 @@ export const backPropFor2LevelSigmoidUnitForwardNetwork = (
 const snapshotWeights = (layers: ILayer[]): number[][][] => layers.map(layer => layer.units.map(u => [...u.weights]))
 
 const updateWeights = (x: number[], eta: number, network: INetwork, alpha: number = 0) => {
-  network.layers[0].units.forEach(u => {
+  const [hiddenLayer, outputLayer] = network.layers
+
+  hiddenLayer.units.forEach(u => {
     x.forEach((xji, index) => {
       u.deltas[index] = eta * u.delta * xji + alpha * u.deltas[index]
       u.weights[index] = u.weights[index] + u.deltas[index]
     })
   })
 
-  network.layers[1].units.forEach(u => {
-    network.layers[0].units.forEach((xji, index) => {
+  outputLayer.units.forEach(u => {
+    hiddenLayer.units.forEach((xji, index) => {
       u.deltas[index] = eta * u.delta * xji.output + alpha * u.deltas[index]
       u.weights[index] = u.weights[index] + u.deltas[index]
     })
@@ -72,28 +74,33 @@ const updateWeights = (x: number[], eta: number, network: INetwork, alpha: numbe
 }
 
 const backwardProp = (target: number, network: INetwork) => {
-  network.layers[1].units.forEach(u => {
+  const [hiddenLayer, outputLayer] = network.layers
+
+  outputLayer.units.forEach(u => {
     u.delta = u.output * (1 - u.output) * (target - u.output)
   })
 
-  network.layers[0].units.forEach(u => {
+
+  hiddenLayer.units.forEach(u => {
     u.delta =
       u.output *
       (1 - u.output) *
       PerceptronBase.sumProduct(
         [u.weights[0]],
-        network.layers[1].units.map(({ delta }) => delta),
+        outputLayer.units.map(({ delta }) => delta),
       )
   })
 }
 
 const forwardProp = (input: ITrainingExample = { x: [1, 0], t: 1 }, network: INetwork) => {
-  network.layers[0].units.forEach(u => {
+  const [hiddenLayer, outputLayer] = network.layers
+
+  hiddenLayer.units.forEach(u => {
     u.output = sigmoidThresholdUnit(u.weights)(input.x)
   })
 
-  network.layers[1].units.forEach(u => {
-    u.output = sigmoidThresholdUnit(u.weights)([network.layers[0].units[0].output])
+  outputLayer.units.forEach(u => {
+    u.output = sigmoidThresholdUnit(u.weights)([hiddenLayer.units[0].output])
   })
 }
 
@@ -117,3 +124,37 @@ export interface IUnit {
   output: number
   weights: number[]
 }
+
+const emptyNode: IUnit = {
+  weights: [],
+  delta: 0,
+  deltas: [0, 0],
+  output: 0,
+}
+
+const duplicateNode = (n: number) => (node: IUnit) => new Array(n).fill({ ...node })
+
+export const build3LayerNetwork = (numberOfInput: number, numberOfHidden: number, numberOfOutput: number): INetwork => {
+
+  const network: INetwork = { layers: [], weightsHistory: [] }
+
+  const inputLayer: ILayer = {
+    units: duplicateNode(numberOfInput)({ ...emptyNode, weights: new Array(numberOfInput).fill(1) }),
+  }
+
+  const hiddenLayer: ILayer = {
+    units: duplicateNode(numberOfHidden)({ ...emptyNode, weights: new Array(numberOfInput + 1).fill(0.1) }),
+  }
+
+  const outputLayer: ILayer = {
+    units: duplicateNode(numberOfOutput)({ ...emptyNode, weights: new Array(numberOfHidden + 1).fill(0.1) }),
+  }
+
+  network.layers.push(inputLayer)
+  network.layers.push(hiddenLayer)
+  network.layers.push(outputLayer)
+
+  return network
+}
+
+export const build8x3x8 = (): INetwork => build3LayerNetwork(8, 3, 8)
