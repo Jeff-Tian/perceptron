@@ -1,5 +1,6 @@
 import { sigmoidThresholdUnit } from './SigmoidThresholdUnit'
 import { PerceptronBase } from './index'
+import Cloneable from './helpers/Cloneable'
 
 const learnOneStep = (network: INetwork, eta: number, alpha: number = 0) => (input, index) => {
   forwardProp(input, network)
@@ -142,22 +143,22 @@ const emptyNode: IUnit = {
   output: 0,
 }
 
-const duplicateNode = (n: number) => (node: IUnit) => new Array(n).fill({ ...node })
+const duplicateNode = (n: number) => (node: IUnit) => new Array(n).fill(Cloneable.deepCopy(node))
 
 export const build3LayerNetwork = (numberOfInput: number, numberOfHidden: number, numberOfOutput: number): INetwork => {
 
   const network: INetwork = { layers: [], weightsHistory: [] }
 
   const inputLayer: ILayer = {
-    units: duplicateNode(numberOfInput)({ ...emptyNode, weights: new Array(numberOfInput).fill(1) }),
+    units: duplicateNode(numberOfInput)({ ...Cloneable.deepCopy(emptyNode), weights: new Array(numberOfInput).fill(1) }),
   }
 
   const hiddenLayer: ILayer = {
-    units: duplicateNode(numberOfHidden)({ ...emptyNode, weights: new Array(numberOfInput + 1).fill(0.1) }),
+    units: duplicateNode(numberOfHidden)({ ...Cloneable.deepCopy(emptyNode), weights: new Array(numberOfInput + 1).fill(0.1) }),
   }
 
   const outputLayer: ILayer = {
-    units: duplicateNode(numberOfOutput)({ ...emptyNode, weights: new Array(numberOfHidden + 1).fill(0.1) }),
+    units: duplicateNode(numberOfOutput)({ ...Cloneable.deepCopy(emptyNode), weights: new Array(numberOfHidden + 1).fill(0.1) }),
   }
 
   network.layers.push(inputLayer)

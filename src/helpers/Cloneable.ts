@@ -1,4 +1,4 @@
-export class cloneable {
+export default class Cloneable {
   public static deepCopy<T>(source: T): T {
     return Array.isArray(source)
       ? source.map(item => this.deepCopy(item))
