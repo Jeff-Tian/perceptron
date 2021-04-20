@@ -6,7 +6,8 @@ export class cloneable {
         ? new Date(source.getTime())
         : source && typeof source === 'object'
           ? Object.getOwnPropertyNames(source).reduce((o, prop) => {
-            Object.defineProperty(o, prop, Object.getOwnPropertyDescriptor(source, prop));
+            const v = Object.getOwnPropertyDescriptor(source, prop);
+            v && Object.defineProperty(o, prop, v);
             o[prop] = this.deepCopy(source[prop]);
             return o;
           }, Object.create(Object.getPrototypeOf(source)))

@@ -28,6 +28,12 @@ export const backPropFor2LevelSigmoidUnitForwardNetwork = (
 ) => {
   const network: INetwork = {
     layers: [
+      {
+        units: [
+          { weights: [1], output: 0, delta: 0, deltas: [0, 0] },
+          { weights: [1], output: 0, delta: 0, deltas: [0, 0] }
+        ]
+      },
       { units: [{ weights: [0.1, 0.1, 0.1], output: 0, delta: 0, deltas: [0, 0] }] },
       {
         units: [
@@ -53,10 +59,10 @@ export const backPropFor2LevelSigmoidUnitForwardNetwork = (
   return network
 }
 
-const snapshotWeights = (layers: ILayer[]): number[][][] => layers.map(layer => layer.units.map(u => [...u.weights]))
+const snapshotWeights = (layers: ILayer[]): number[][][] => layers.slice(1).map(layer => layer.units.map(u => [...u.weights]))
 
 const updateWeights = (x: number[], eta: number, network: INetwork, alpha: number = 0) => {
-  const [hiddenLayer, outputLayer] = network.layers
+  const [_, hiddenLayer, outputLayer] = network.layers
 
   hiddenLayer.units.forEach(u => {
     x.forEach((xji, index) => {
@@ -74,7 +80,7 @@ const updateWeights = (x: number[], eta: number, network: INetwork, alpha: numbe
 }
 
 const backwardProp = (target: number, network: INetwork) => {
-  const [hiddenLayer, outputLayer] = network.layers
+  const [_, hiddenLayer, outputLayer] = network.layers
 
   outputLayer.units.forEach(u => {
     u.delta = u.output * (1 - u.output) * (target - u.output)
@@ -93,7 +99,7 @@ const backwardProp = (target: number, network: INetwork) => {
 }
 
 const forwardProp = (input: ITrainingExample = { x: [1, 0], t: 1 }, network: INetwork) => {
-  const [hiddenLayer, outputLayer] = network.layers
+  const [_, hiddenLayer, outputLayer] = network.layers
 
   hiddenLayer.units.forEach(u => {
     u.output = sigmoidThresholdUnit(u.weights)(input.x)

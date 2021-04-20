@@ -5,7 +5,7 @@ describe('Neural Network', () => {
   it('learns in a simple way', () => {
     const network = backPropFor2LevelSigmoidUnitForwardNetwork()
 
-    assert.deepStrictEqual(network.layers, [
+    assert.deepStrictEqual(network.layers.slice(1), [
       {
         units: [
           {
@@ -46,7 +46,7 @@ describe('Neural Network', () => {
   it('learns with alpha', () => {
     const network = backPropFor2LevelSigmoidUnitForwardNetwork(undefined, undefined, 0.9)
 
-    assert.deepStrictEqual(network.layers, [
+    assert.deepStrictEqual(network.layers.slice(1), [
       {
         units: [
           {
