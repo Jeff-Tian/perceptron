@@ -99,10 +99,14 @@ const backwardProp = (target: number, network: INetwork) => {
 }
 
 const forwardProp = (input: ITrainingExample = { x: [1, 0], t: 1 }, network: INetwork) => {
-  const [_, hiddenLayer, outputLayer] = network.layers
+  const [inputLayer, hiddenLayer, outputLayer] = network.layers
+
+  inputLayer.units.forEach((u, i) => {
+    u.output = input.x[i]
+  })
 
   hiddenLayer.units.forEach(u => {
-    u.output = sigmoidThresholdUnit(u.weights)(input.x)
+    u.output = sigmoidThresholdUnit(u.weights)(inputLayer.units.map(u => u.output))
   })
 
   outputLayer.units.forEach(u => {
