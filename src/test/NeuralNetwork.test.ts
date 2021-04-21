@@ -1,4 +1,4 @@
-import { backPropFor2LevelSigmoidUnitForwardNetwork, build8x3x8 } from '../NeuralNetwork'
+import { backPropFor2LevelSigmoidUnitForwardNetwork, build8x3x8, build3LayerNetwork } from '../NeuralNetwork'
 import assert = require('assert')
 
 describe('Neural Network', () => {
@@ -95,5 +95,42 @@ describe('8x3x8 network', () => {
     hiddenLayer.units.forEach(u => assert.deepStrictEqual(u.weights, new Array(9).fill(0.1)))
     assert(outputLayer.units.length === 8)
     outputLayer.units.forEach(u => assert.deepStrictEqual(u.weights, new Array(4).fill(0.1)))
+  })
+})
+
+describe('3-layer-network', () => {
+  it('builds a 2x1x1 network', () => {
+    const n = build3LayerNetwork(2, 1, 1)
+
+    const expectedNetwork = {
+      layers: [
+        {
+          units: [
+            { weights: [1], output: 0, delta: 0, deltas: [0, 0] },
+            { weights: [1], output: 0, delta: 0, deltas: [0, 0] }
+          ]
+        },
+        { units: [{ weights: [0.1, 0.1, 0.1], output: 0, delta: 0, deltas: [0, 0] }] },
+        {
+          units: [
+            {
+              weights: [0.1, 0.1],
+              output: 0,
+              delta: 0,
+              deltas: [0, 0],
+            },
+          ],
+        },
+      ],
+      weightsHistory: [],
+    }
+
+    const [expectedInputLayer, expectedHiddenLayer, expectedOutputLayer] = expectedNetwork.layers
+    const [actualInputLayer, actualHiddenLayer, actualOutputLayer] = n.layers
+
+    assert.deepStrictEqual(actualInputLayer, expectedInputLayer)
+    assert.deepStrictEqual(actualHiddenLayer, expectedHiddenLayer)
+    assert.deepStrictEqual(actualOutputLayer, expectedOutputLayer)
+    assert.deepStrictEqual(n, expectedNetwork)
   })
 })

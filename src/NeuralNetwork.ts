@@ -150,7 +150,7 @@ export const build3LayerNetwork = (numberOfInput: number, numberOfHidden: number
   const network: INetwork = { layers: [], weightsHistory: [] }
 
   const inputLayer: ILayer = {
-    units: duplicateNode(numberOfInput)({ ...Cloneable.deepCopy(emptyNode), weights: new Array(numberOfInput).fill(1) }),
+    units: duplicateNode(numberOfInput)({ ...Cloneable.deepCopy(emptyNode), weights: [1] }),
   }
 
   const hiddenLayer: ILayer = {
