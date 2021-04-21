@@ -27,28 +27,7 @@ export const backPropFor2LevelSigmoidUnitForwardNetwork = (
   numberOfOutput: number = 1,
   numberOfHiddenLayers: number = 1,
 ) => {
-  const network: INetwork = {
-    layers: [
-      {
-        units: [
-          { weights: [1], output: 0, delta: 0, deltas: [0, 0] },
-          { weights: [1], output: 0, delta: 0, deltas: [0, 0] }
-        ]
-      },
-      { units: [{ weights: [0.1, 0.1, 0.1], output: 0, delta: 0, deltas: [0, 0] }] },
-      {
-        units: [
-          {
-            weights: [0.1, 0.1],
-            output: 0,
-            delta: 0,
-            deltas: [0, 0],
-          },
-        ],
-      },
-    ],
-    weightsHistory: [],
-  }
+  const network: INetwork = build3LayerNetwork(numberOfInput, numberOfHiddenLayers, numberOfOutput)
 
   network.weightsHistory.push({ index: -1, weights: snapshotWeights(network.layers) })
 
@@ -143,7 +122,7 @@ const emptyNode: IUnit = {
   output: 0,
 }
 
-const duplicateNode = (n: number) => (node: IUnit) => new Array(n).fill(Cloneable.deepCopy(node))
+const duplicateNode = (n: number) => (node: IUnit) => new Array(n).fill(0).map(() => Cloneable.deepCopy(node))
 
 export const build3LayerNetwork = (numberOfInput: number, numberOfHidden: number, numberOfOutput: number): INetwork => {
 
